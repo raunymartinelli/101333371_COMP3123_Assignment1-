@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: app_container
+    build: .
+    ports:
+      - "3004:3004"
+    environment:
+      - SEVER_PORT=3004
+      - MONGODB_URI=mongodb://mongo:27017/comp3123_assignment1
+    depends_on:
+      - mongo
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+  mongo:
+    container_name: mongo_container
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example # Use a secure password in production
+      - MONGO_INITDB_DATABASE=comp3123_assignment1
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017" # Expose this port only in development; remove for production
+
+volumes:
+  mongo-data:
+
